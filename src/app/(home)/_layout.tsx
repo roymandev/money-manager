@@ -1,6 +1,6 @@
 import { PaperTab } from '@/components/utils/PaperTab';
 
-function HomeLayout() {
+function MainLayout() {
   return (
     <PaperTab>
       <PaperTab.Screen
@@ -8,11 +8,19 @@ function HomeLayout() {
         options={{ title: 'Home', tabBarIcon: 'home' }}
       />
       <PaperTab.Screen
-        name="about"
-        options={{ title: 'About', tabBarIcon: 'information' }}
+        name="transactions"
+        options={{ title: 'Trans.', tabBarIcon: 'book' }}
+      />
+      <PaperTab.Screen
+        name="statistics"
+        options={{ title: 'Stats', tabBarIcon: 'chart-bar' }}
+      />
+      <PaperTab.Screen
+        name="others"
+        options={{ title: 'More', tabBarIcon: 'dots-horizontal' }}
       />
     </PaperTab>
   );
 }
 
-export default HomeLayout;
+export default MainLayout;
