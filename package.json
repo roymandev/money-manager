@@ -1,0 +1,67 @@
+{
+  "name": "template-expo-with-native-paper",
+  "main": "expo-router/entry",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "format": "prettier --write .",
+    "lint": "eslint . --ext .ts,.tsx",
+    "prepare": "husky",
+    "commit": "git-cz"
+  },
+  "dependencies": {
+    "@expo-google-fonts/rubik": "^0.2.3",
+    "@expo/vector-icons": "^14.0.0",
+    "@pchmn/expo-material3-theme": "^1.3.2",
+    "@react-navigation/native": "^6.0.2",
+    "@react-navigation/stack": "^6.3.29",
+    "expo": "~50.0.14",
+    "expo-font": "~11.10.3",
+    "expo-linking": "~6.2.2",
+    "expo-router": "~3.4.8",
+    "expo-splash-screen": "~0.26.4",
+    "expo-status-bar": "~1.11.1",
+    "expo-system-ui": "~2.9.3",
+    "react": "18.2.0",
+    "react-native": "0.73.6",
+    "react-native-gesture-handler": "~2.14.0",
+    "react-native-paper": "^5.12.3",
+    "react-native-safe-area-context": "^4.9.0",
+    "react-native-screens": "~3.29.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@commitlint/cli": "^19.2.2",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@commitlint/cz-commitlint": "^19.2.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/react": "~18.2.45",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "ajv": "^8.12.0",
+    "commitizen": "^4.3.0",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-universe": "^12.0.1",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^9.0.11",
+    "inquirer": "^9.2.19",
+    "prettier": "^3.2.5",
+    "typescript": "^5.1.3"
+  },
+  "private": true,
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  }
+}
