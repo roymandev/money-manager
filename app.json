@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "template-expo-with-native-paper",
-    "slug": "template-expo-with-native-paper",
+    "name": "money-manager",
+    "slug": "money-manager",
     "version": "1.0.0",
     "platforms": ["ios", "android"],
     "orientation": "portrait",
@@ -22,7 +22,7 @@
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.royman.dev.templateexpowithnativepaper"
+      "package": "com.royman.dev.moneymanager"
     },
     "plugins": ["expo-router", "expo-font"],
     "experiments": {
