@@ -1,10 +1,32 @@
-import { View } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
+
+import PaperStackHeader from '@/components/PaperStackHeader';
+import TotalHeader from '@/components/TotalHeader';
 
 export default function TransactionsScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button mode="outlined">Accounts</Button>
-    </View>
+    <>
+      <PaperStackHeader options={{ title: 'Accounts' }}>
+        <Appbar.Action icon="plus" onPress={() => {}} />
+      </PaperStackHeader>
+
+      <TotalHeader
+        items={[
+          {
+            name: 'Assets',
+            amount: 7931616,
+          },
+          {
+            name: 'Liabilities',
+            amount: -6974391,
+          },
+          {
+            name: 'Total',
+            amount: 1957225,
+            white: true,
+          },
+        ]}
+      />
+    </>
   );
 }
