@@ -60,7 +60,7 @@ function ThemesProvider({ children }: Props) {
               ...DarkTheme.colors,
               ...m3Theme.dark,
             },
-            CONFIG_FONTS,
+            fonts: CONFIG_FONTS,
           }
         : {
             ...MD3LightTheme,
@@ -69,7 +69,7 @@ function ThemesProvider({ children }: Props) {
               ...LightTheme.colors,
               ...m3Theme.light,
             },
-            CONFIG_FONTS,
+            fonts: CONFIG_FONTS,
           },
     [DarkTheme, LightTheme, colorScheme, m3Theme.dark, m3Theme.light]
   );

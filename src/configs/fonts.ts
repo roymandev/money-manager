@@ -1,7 +1,12 @@
+import { Platform } from 'react-native';
 import { configureFonts } from 'react-native-paper';
 
 const baseFont = {
-  fontFamily: 'Rubik_400Regular',
+  fontFamily: Platform.select({
+    android: 'Rubik_400Regular',
+    ios: 'System',
+    default: 'sans-serif',
+  }),
 } as const;
 
 const baseVariants = configureFonts({
@@ -18,7 +23,11 @@ const customVariants = Object.keys(baseVariants).reduce((acc, key) => {
     ...acc,
     [key]: {
       ...variant,
-      fontFamily,
+      fontFamily: Platform.select({
+        android: fontFamily,
+        ios: 'System',
+        default: 'sans-serif',
+      }),
     },
   };
 }, {});
