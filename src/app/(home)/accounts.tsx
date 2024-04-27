@@ -1,5 +1,7 @@
 import { SectionList, View } from 'react-native';
-import { Appbar, List, Text, useTheme } from 'react-native-paper';
+import { Appbar, List, Text, Tooltip, useTheme } from 'react-native-paper';
+
+import { Link } from 'expo-router';
 
 import Currency from '@/components/Currency';
 import PaperStackHeader from '@/components/PaperStackHeader';
@@ -12,7 +14,11 @@ export default function TransactionsScreen() {
   return (
     <>
       <PaperStackHeader options={{ title: 'Accounts' }}>
-        <Appbar.Action icon="plus" onPress={() => {}} />
+        <Tooltip title="Add Account">
+          <Link asChild href="/(accounts)/add-account">
+            <Appbar.Action icon="plus" />
+          </Link>
+        </Tooltip>
       </PaperStackHeader>
 
       <TotalHeader

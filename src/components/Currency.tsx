@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { TextStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
+import { formatCurrency } from '@/utils/formatter';
+
 type Props = {
   amount: number;
   locales?: string;
@@ -13,7 +15,7 @@ type Props = {
 
 function Currency({
   amount,
-  locales = 'id-ID',
+  locales,
   withSymbol,
   withSign,
   white,
@@ -28,15 +30,10 @@ function Currency({
     color = theme.colors.primary;
   }
 
-  const display = useMemo(() => {
-    return new Intl.NumberFormat(locales, {
-      style: withSymbol ? 'currency' : 'decimal',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-      signDisplay: withSign ? 'auto' : 'never',
-    }).format(amount);
-  }, [amount, locales, withSymbol, withSign]);
+  const display = useMemo(
+    () => formatCurrency(amount, { locales, withSymbol, withSign }),
+    [amount, locales, withSymbol, withSign]
+  );
 
   return (
     <Text style={[{ color, fontFamily: 'Lato_400Regular' }, style]}>
