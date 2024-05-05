@@ -16,6 +16,7 @@ import {
 import * as SplashScreen from 'expo-splash-screen';
 
 import { CONFIG_FONTS } from '@/configs/fonts';
+import { Lato_400Regular } from '@expo-google-fonts/lato';
 import {
   Rubik_400Regular,
   Rubik_500Medium,
@@ -32,11 +33,12 @@ type Props = {
 function ThemesProvider({ children }: Props) {
   const colorScheme = useColorScheme();
   const { theme: m3Theme } = useMaterial3Theme({
-    fallbackSourceColor: '#7d2a30',
+    fallbackSourceColor: '#D5573B',
   });
   const [fontsLoaded, fontError] = useFonts({
     Rubik_400Regular,
     Rubik_500Medium,
+    Lato_400Regular,
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -60,7 +62,7 @@ function ThemesProvider({ children }: Props) {
               ...DarkTheme.colors,
               ...m3Theme.dark,
             },
-            CONFIG_FONTS,
+            fonts: CONFIG_FONTS,
           }
         : {
             ...MD3LightTheme,
@@ -69,7 +71,7 @@ function ThemesProvider({ children }: Props) {
               ...LightTheme.colors,
               ...m3Theme.light,
             },
-            CONFIG_FONTS,
+            fonts: CONFIG_FONTS,
           },
     [DarkTheme, LightTheme, colorScheme, m3Theme.dark, m3Theme.light]
   );

@@ -30,6 +30,14 @@ module.exports = {
       },
     ],
     'react/jsx-props-no-spreading': 'off',
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'variable',
+        format: ['camelCase', 'UPPER_CASE'],
+        leadingUnderscore: 'allow',
+      },
+    ],
 
     // Prevent conflict with prettier
     'import/order': 'off',

@@ -10,15 +10,22 @@ type Props = Partial<StackHeaderProps> & {
   options: PaperStackOptions;
   children?: React.ReactNode;
   mode?: AppbarProps['mode'];
+  withBackButton?: boolean;
 };
 
-function PaperStackHeader({ children, options, back, mode = 'small' }: Props) {
+function PaperStackHeader({
+  children,
+  options,
+  withBackButton,
+  back,
+  mode = 'small',
+}: Props) {
   const theme = useTheme();
 
   return (
     <Appbar.Header mode={mode} style={{ backgroundColor: 'transparent' }}>
-      {back ? (
-        <Tooltip title={back.title}>
+      {withBackButton ? (
+        <Tooltip title={back?.title || 'Go Back'}>
           <Appbar.BackAction onPress={router.back} />
         </Tooltip>
       ) : null}
