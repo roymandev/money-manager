@@ -21,7 +21,7 @@ function CurrencyInput({ value, onValueChange, ...rest }: Props) {
 
   const formattedValue = useMemo(() => {
     // if (isFocused) return String(_value);
-    return formatCurrency(_value);
+    return formatCurrency(_value, { withSign: true });
   }, [_value]);
 
   const handleOnChangeText = (newValue: string) => {

@@ -15,5 +15,10 @@ export const formatCurrency = (
     signDisplay: options?.withSign ? options?.signDisplay : 'never',
   }).format(value);
 
-export const formatStrToNumber = (str: string) =>
-  Number(str.replace(/[^0-9]/g, ''));
+export const formatStrToNumber = (str: string) => {
+  const isNegative = str.includes('-');
+
+  const number = Number(str.replace(/[^0-9]/g, ''));
+
+  return isNegative ? -number : number;
+};
