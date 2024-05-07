@@ -1,8 +1,10 @@
-import { FAB, SegmentedButtons } from 'react-native-paper';
+import { useState } from 'react';
+import { Button, FAB, SegmentedButtons } from 'react-native-paper';
 
 import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView } from 'react-native-gesture-handler';
+import { DatePickerModal } from 'react-native-paper-dates';
 import { Input } from 'valibot';
 
 import CurrencyInput from '@/components/CurrencyInput';
@@ -12,6 +14,8 @@ import { valibotResolver } from '@hookform/resolvers/valibot';
 
 function AddTransactionPage() {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState();
 
   const { control, handleSubmit } = useForm<
     Input<typeof schemaBaseTransaction>
@@ -67,7 +71,18 @@ function AddTransactionPage() {
             <CurrencyInput label="Amount" onValueChange={onChange} {...rest} />
           )}
         />
+
+        <Button onPress={() => setOpen(true)}>Test</Button>
       </ScrollView>
+
+      <DatePickerModal
+        locale="en-GB"
+        mode="single"
+        visible={open}
+        onDismiss={() => setOpen(false)}
+        date={date}
+        onConfirm={() => setOpen(false)}
+      />
 
       <FAB
         icon="content-save"
