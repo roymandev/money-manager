@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { Button, FAB, SegmentedButtons } from 'react-native-paper';
+import { FAB, SegmentedButtons } from 'react-native-paper';
 
+import { formatISO } from 'date-fns';
 import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView } from 'react-native-gesture-handler';
-import { DatePickerModal } from 'react-native-paper-dates';
 import { Input } from 'valibot';
 
+import ButtonDatePicker from '@/components/ButtonDatePicker';
 import CurrencyInput from '@/components/CurrencyInput';
 import PaperStackHeader from '@/components/PaperStackHeader';
 import { schemaBaseTransaction } from '@/modules/transactions/schemas';
@@ -14,16 +14,15 @@ import { valibotResolver } from '@hookform/resolvers/valibot';
 
 function AddTransactionPage() {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [date, setDate] = useState();
 
-  const { control, handleSubmit } = useForm<
+  const { control, handleSubmit, setFocus } = useForm<
     Input<typeof schemaBaseTransaction>
   >({
     resolver: valibotResolver(schemaBaseTransaction),
     defaultValues: {
       type: 'expense',
       amount: 0,
+      date: formatISO(new Date()),
     },
   });
 
@@ -46,10 +45,10 @@ function AddTransactionPage() {
         <Controller
           control={control}
           name="type"
-          render={({ field: { onChange, ref, ...rest } }) => (
+          render={({ field: { value, onChange } }) => (
             <SegmentedButtons
+              value={value}
               onValueChange={onChange}
-              {...rest}
               buttons={[
                 {
                   value: 'expense',
@@ -66,23 +65,27 @@ function AddTransactionPage() {
 
         <Controller
           control={control}
-          name="amount"
-          render={({ field: { onChange, ref, ...rest } }) => (
-            <CurrencyInput label="Amount" onValueChange={onChange} {...rest} />
+          name="date"
+          render={({ field: { onChange, ...rest } }) => (
+            <ButtonDatePicker
+              label="Date"
+              onChange={(value) => {
+                onChange(value);
+                setTimeout(() => setFocus('amount'), 200);
+              }}
+              {...rest}
+            />
           )}
         />
 
-        <Button onPress={() => setOpen(true)}>Test</Button>
+        <Controller
+          control={control}
+          name="amount"
+          render={({ field: { onChange, ...rest } }) => (
+            <CurrencyInput label="Amount" onValueChange={onChange} {...rest} />
+          )}
+        />
       </ScrollView>
-
-      <DatePickerModal
-        locale="en-GB"
-        mode="single"
-        visible={open}
-        onDismiss={() => setOpen(false)}
-        date={date}
-        onConfirm={() => setOpen(false)}
-      />
 
       <FAB
         icon="content-save"
