@@ -5,6 +5,7 @@
       "withoutCredentials": true,
       "distribution": "internal",
       "android": {
+        "image": "latest",
         "buildType": "apk"
       }
     },
