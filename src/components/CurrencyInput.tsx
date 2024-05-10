@@ -1,20 +1,29 @@
 import { forwardRef, useMemo } from 'react';
-import { TextInput as RnTextInput } from 'react-native';
+import { TextInput as RnTextInput, View } from 'react-native';
 import { TextInput, TextInputProps } from 'react-native-paper';
 
 import { formatCurrency, formatStrToNumber } from '@/utils/formatter';
 import { useUncontrolled } from '@mantine/hooks';
 
+import InputError from './InputError';
+
 type Props = Omit<
   TextInputProps,
-  'mode' | 'left' | 'right' | 'keyboardType' | 'value' | 'onChangeText'
+  | 'mode'
+  | 'left'
+  | 'right'
+  | 'keyboardType'
+  | 'value'
+  | 'onChangeText'
+  | 'error'
 > & {
   value?: number;
   onValueChange?: (value: number) => void;
+  error?: string;
 };
 
 const CurrencyInput = forwardRef<RnTextInput, Props>(
-  ({ value, onValueChange, ...rest }: Props, ref) => {
+  ({ value, onValueChange, error, ...rest }: Props, ref) => {
     const [_value, handleChange] = useUncontrolled({
       value,
       finalValue: 0,
@@ -32,23 +41,28 @@ const CurrencyInput = forwardRef<RnTextInput, Props>(
     };
 
     return (
-      <TextInput
-        {...rest}
-        ref={ref}
-        value={formattedValue}
-        onChangeText={handleOnChangeText}
-        mode="outlined"
-        left={<TextInput.Affix text="Rp" />}
-        right={
-          _value && (
-            <TextInput.Icon
-              icon="close-circle-outline"
-              onPress={() => handleChange(0)}
-            />
-          )
-        }
-        inputMode="decimal"
-      />
+      <View>
+        <TextInput
+          {...rest}
+          ref={ref}
+          value={formattedValue}
+          onChangeText={handleOnChangeText}
+          mode="outlined"
+          left={<TextInput.Affix text="Rp" />}
+          right={
+            _value && (
+              <TextInput.Icon
+                icon="close-circle-outline"
+                onPress={() => handleChange(0)}
+              />
+            )
+          }
+          inputMode="decimal"
+          error={!!error}
+        />
+
+        <InputError message={error} />
+      </View>
     );
   }
 );

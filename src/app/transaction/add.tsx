@@ -9,6 +9,7 @@ import { Input } from 'valibot';
 import ButtonDatePicker from '@/components/ButtonDatePicker';
 import CurrencyInput from '@/components/CurrencyInput';
 import PaperStackHeader from '@/components/PaperStackHeader';
+import TextInput from '@/components/TextInput';
 import { schemaBaseTransaction } from '@/modules/transactions/schemas';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
@@ -19,10 +20,12 @@ function AddTransactionPage() {
     Input<typeof schemaBaseTransaction>
   >({
     resolver: valibotResolver(schemaBaseTransaction),
+    shouldFocusError: false,
     defaultValues: {
       type: 'expense',
       amount: 0,
       date: formatISO(new Date()),
+      category: '',
     },
   });
 
@@ -39,7 +42,7 @@ function AddTransactionPage() {
         contentContainerStyle={{
           paddingBottom: 88,
           paddingHorizontal: 16,
-          gap: 24,
+          gap: 16,
         }}
       >
         <Controller
@@ -66,13 +69,28 @@ function AddTransactionPage() {
         <Controller
           control={control}
           name="date"
-          render={({ field: { onChange, ...rest } }) => (
+          render={({ field: { onChange, ...rest }, fieldState }) => (
             <ButtonDatePicker
               label="Date"
               onChange={(value) => {
                 onChange(value);
                 setTimeout(() => setFocus('amount'), 200);
               }}
+              error={fieldState.error?.message}
+              {...rest}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="category"
+          render={({ field: { onChange, ...rest }, fieldState }) => (
+            <TextInput
+              label="Category"
+              mode="outlined"
+              onChangeText={onChange}
+              error={fieldState.error?.message}
               {...rest}
             />
           )}
@@ -81,8 +99,13 @@ function AddTransactionPage() {
         <Controller
           control={control}
           name="amount"
-          render={({ field: { onChange, ...rest } }) => (
-            <CurrencyInput label="Amount" onValueChange={onChange} {...rest} />
+          render={({ field: { onChange, ...rest }, fieldState }) => (
+            <CurrencyInput
+              label="Amount"
+              onValueChange={onChange}
+              error={fieldState.error?.message}
+              {...rest}
+            />
           )}
         />
       </ScrollView>
