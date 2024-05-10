@@ -5,15 +5,18 @@ export const formatCurrency = (
     withSymbol?: boolean;
     withSign?: boolean;
   }
-) =>
-  new Intl.NumberFormat(options?.locales || 'id-ID', {
+) => {
+  const newOptions = { ...options };
+  if (options?.withSymbol) newOptions.style = 'currency';
+  if (!options?.withSign) newOptions.signDisplay = 'never';
+
+  return new Intl.NumberFormat(options?.locales || 'id-ID', {
     currency: 'IDR',
     ...options,
-    style: options?.withSymbol ? 'currency' : options?.style,
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-    signDisplay: options?.withSign ? options?.signDisplay : 'never',
   }).format(value);
+};
 
 export const formatStrToNumber = (str: string) => {
   const isNegative = str.includes('-');
