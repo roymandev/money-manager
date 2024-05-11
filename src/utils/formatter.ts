@@ -25,3 +25,7 @@ export const formatStrToNumber = (str: string) => {
 
   return isNegative ? -number : number;
 };
+
+export const capitalize = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
