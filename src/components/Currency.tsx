@@ -9,25 +9,36 @@ type Props = {
   locales?: string;
   withSymbol?: boolean;
   withSign?: boolean;
-  white?: boolean;
+  type?: 'positive' | 'negative' | 'neutral';
   style?: TextStyle;
+  reverse?: boolean;
 };
 
 function Currency({
   amount,
   locales,
   withSymbol,
-  withSign,
-  white,
+  withSign = true,
+  type,
+  reverse,
   style,
 }: Props) {
   const theme = useTheme();
 
+  let transType = amount > 0 ? 'positive' : 'negative';
+  if (reverse) transType = amount > 0 ? 'negative' : 'positive';
+  if (type) transType = type;
+
   let color = '#fff';
-  if (!white && amount < 0) {
-    color = theme.colors.tertiary;
-  } else if (!white && amount > 0) {
-    color = theme.colors.primary;
+
+  switch (transType) {
+    case 'positive':
+      color = theme.colors.primary;
+      break;
+    case 'negative':
+      color = theme.colors.tertiary;
+      break;
+    default:
   }
 
   const display = useMemo(

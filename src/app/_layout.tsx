@@ -1,10 +1,13 @@
 import { StackHeaderProps } from '@react-navigation/stack';
 
 import * as SplashScreen from 'expo-splash-screen';
+import { enGB, registerTranslation } from 'react-native-paper-dates';
 
 import PaperStackHeader from '@/components/PaperStackHeader';
 import PaperStack from '@/components/utils/PaperStack';
 import ThemesProvider from '@/components/utils/ThemesProvider';
+
+registerTranslation('en-GB', enGB);
 
 export {
   // Catch any errors thrown by the Layout component.
