@@ -10,9 +10,9 @@ export type TTransactionGroup = {
   total: number;
 };
 
+export type TTransactionSections = (TTransaction | [string, number])[];
+
 export type TTransactionFilters = {
-  date: {
-    start: string;
-    end: string;
-  };
+  dateStart: string;
+  dateEnd: string;
 };

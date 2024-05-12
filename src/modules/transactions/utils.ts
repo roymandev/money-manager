@@ -1,12 +1,15 @@
-import { TTransaction, TTransactionGroup } from './types';
+import { isSameDay, startOfDay } from 'date-fns';
+
+import { TTransaction, TTransactionGroup, TTransactionSections } from './types';
 
 export const groupTransByDate = (items: TTransaction[]) =>
   items.reduce((acc: TTransactionGroup[], item) => {
-    const index = acc.findIndex((i) => i.date === item.date);
+    const index = acc.findIndex((i) => isSameDay(i.date, item.date));
+    const currentDate = startOfDay(item.date);
 
     if (index === -1) {
       acc.push({
-        date: item.date,
+        date: currentDate.toISOString(),
         items: [item],
         total: item.amount,
       });
@@ -17,3 +20,36 @@ export const groupTransByDate = (items: TTransaction[]) =>
 
     return acc;
   }, []);
+
+export const addTransSectionsHeader = (items: TTransaction[]) => {
+  const sections: TTransactionSections = [];
+  let headerIndex = -1;
+  let headerAmount = 0;
+  let headerDate = '';
+  let headersCount = 0;
+
+  const updateHeader = () => {
+    sections[headerIndex] = [headerDate, headerAmount];
+  };
+
+  items.forEach((item, index) => {
+    const date = startOfDay(item.date).toISOString();
+
+    if (date !== headerDate) {
+      if (headerIndex !== -1) updateHeader();
+
+      sections.push([item.date, item.amount]);
+      headerIndex = index + headersCount;
+      headerDate = date;
+      headersCount += 1;
+      headerAmount = 0;
+    }
+
+    headerAmount += item.amount;
+    sections.push(item);
+  });
+
+  updateHeader();
+
+  return sections;
+};

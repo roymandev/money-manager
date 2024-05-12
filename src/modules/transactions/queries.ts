@@ -21,17 +21,17 @@ export const useTransactions = () =>
       db.select().from(transactions).orderBy(desc(transactions.date)),
   });
 
-export const useTransactionsByDate = (startDate: Date, endDate: Date) => {
-  const start = startOfDay(startDate).toISOString();
-  const end = endOfDay(endDate).toISOString();
+export const useTransactionsByDate = (start: Date, end: Date) => {
+  const dateStart = startOfDay(start).toISOString();
+  const dateEnd = endOfDay(end).toISOString();
 
   return useQuery({
-    ...transactionsKeys.list({ date: { start, end } }),
+    ...transactionsKeys.list({ dateStart, dateEnd }),
     queryFn: (): Promise<TTransaction[]> =>
       db
         .select()
         .from(transactions)
-        .where(between(transactions.date, start, end))
+        .where(between(transactions.date, dateStart, dateEnd))
         .orderBy(desc(transactions.date)),
   });
 };
