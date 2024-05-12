@@ -5,6 +5,7 @@ module.exports = {
     'airbnb',
     'airbnb-typescript',
     'airbnb/hooks',
+    'plugin:@tanstack/eslint-plugin-query/recommended',
     'plugin:prettier/recommended',
   ],
   overrides: [
@@ -21,6 +22,7 @@ module.exports = {
     },
   },
   rules: {
+    'no-underscore-dangle': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/require-default-props': 'off',
     'react/no-unstable-nested-components': [
