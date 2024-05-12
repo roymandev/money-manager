@@ -9,23 +9,32 @@
     "format": "prettier --write .",
     "lint": "eslint . --ext .ts,.tsx",
     "prepare": "husky",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate"
   },
   "dependencies": {
     "@expo-google-fonts/lato": "^0.2.3",
     "@expo-google-fonts/rubik": "^0.2.3",
     "@expo/vector-icons": "^14.0.0",
     "@hookform/resolvers": "^3.3.4",
+    "@lukemorales/query-key-factory": "^1.3.4",
     "@mantine/hooks": "^7.8.1",
     "@pchmn/expo-material3-theme": "^1.3.2",
+    "@react-native-community/netinfo": "^11.3.2",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/stack": "^6.3.29",
+    "@tanstack/react-query": "^5.35.5",
+    "babel-plugin-inline-import": "^3.0.0",
     "date-fns": "^3.6.0",
+    "drizzle-orm": "^0.30.10",
+    "drizzle-valibot": "^0.2.0",
     "expo": "^51.0.2",
     "expo-font": "~12.0.5",
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.11",
     "expo-splash-screen": "~0.27.4",
+    "expo-sqlite": "~14.0.3",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.4",
     "expo-updates": "~0.25.11",
@@ -45,12 +54,14 @@
     "@commitlint/config-conventional": "^19.2.2",
     "@commitlint/cz-commitlint": "^19.2.0",
     "@semantic-release/git": "^10.0.1",
+    "@tanstack/eslint-plugin-query": "^5.32.1",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/react": "~18.2.45",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "ajv": "^8.13.0",
     "commitizen": "^4.3.0",
+    "drizzle-kit": "^0.21.1",
     "eslint": "^8.2.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
@@ -73,5 +84,10 @@
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
-  }
+  },
+  "trustedDependencies": [
+    "better-sqlite3",
+    "es5-ext",
+    "esbuild"
+  ]
 }

@@ -4,6 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { enGB, registerTranslation } from 'react-native-paper-dates';
 
 import PaperStackHeader from '@/components/PaperStackHeader';
+import DatabaseProvider from '@/components/utils/DatabaseProvider';
 import PaperStack from '@/components/utils/PaperStack';
 import ThemesProvider from '@/components/utils/ThemesProvider';
 
@@ -29,23 +30,25 @@ function Header(props: StackHeaderProps) {
 
 export default function RootLayout() {
   return (
-    <ThemesProvider>
-      <PaperStack
-        screenOptions={{
-          headerShown: false,
-          header: Header,
-          transitionSpec: {
-            open: {
-              animation: 'timing',
-              config: { duration: 100, delay: 0 },
+    <DatabaseProvider>
+      <ThemesProvider>
+        <PaperStack
+          screenOptions={{
+            headerShown: false,
+            header: Header,
+            transitionSpec: {
+              open: {
+                animation: 'timing',
+                config: { duration: 100, delay: 0 },
+              },
+              close: {
+                animation: 'timing',
+                config: { duration: 100, delay: 0 },
+              },
             },
-            close: {
-              animation: 'timing',
-              config: { duration: 100, delay: 0 },
-            },
-          },
-        }}
-      />
-    </ThemesProvider>
+          }}
+        />
+      </ThemesProvider>
+    </DatabaseProvider>
   );
 }

@@ -10,22 +10,22 @@ import ButtonDatePicker from '@/components/ButtonDatePicker';
 import CurrencyInput from '@/components/CurrencyInput';
 import PaperStackHeader from '@/components/PaperStackHeader';
 import TextInput from '@/components/TextInput';
-import { schemaBaseTransaction } from '@/modules/transactions/schemas';
+import { schemaTransactionInsert } from '@/schema';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
 function AddTransactionPage() {
   const router = useRouter();
 
   const { control, handleSubmit, setFocus } = useForm<
-    Input<typeof schemaBaseTransaction>
+    Input<typeof schemaTransactionInsert>
   >({
-    resolver: valibotResolver(schemaBaseTransaction),
+    resolver: valibotResolver(schemaTransactionInsert),
     shouldFocusError: false,
     defaultValues: {
       type: 'expense',
       amount: 0,
       date: formatISO(new Date()),
-      category: '',
+      // category: '',
     },
   });
 
