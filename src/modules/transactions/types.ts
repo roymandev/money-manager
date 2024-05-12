@@ -9,3 +9,10 @@ export type TTransactionGroup = {
   items: TTransaction[];
   total: number;
 };
+
+export type TTransactionFilters = {
+  date: {
+    start: string;
+    end: string;
+  };
+};

@@ -2,7 +2,7 @@ import { forwardRef, useCallback, useState } from 'react';
 import { TextInput as RnTextInput, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
-import { format, formatISO } from 'date-fns';
+import { format } from 'date-fns';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { SingleChange } from 'react-native-paper-dates/lib/typescript/Date/Calendar';
 
@@ -32,7 +32,7 @@ const ButtonDatePicker = forwardRef<RnTextInput, Props>(
     const onConfirmSingle = useCallback<SingleChange>(
       (params) => {
         setOpen(false);
-        handleChange(params.date && formatISO(params.date));
+        handleChange(params.date && params.date.toISOString());
       },
       [setOpen, handleChange]
     );
