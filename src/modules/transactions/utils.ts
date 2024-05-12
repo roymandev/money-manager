@@ -1,4 +1,4 @@
-import { TTransaction, TTransactionGroup } from './schemas';
+import { TTransaction, TTransactionGroup } from './types';
 
 export const groupTransByDate = (items: TTransaction[]) =>
   items.reduce((acc: TTransactionGroup[], item) => {
