@@ -68,6 +68,7 @@ export default function HomeScreen() {
             <ListItem
               title={item.category || '(No Category)'}
               right={() => <Currency amount={item.amount} />}
+              onPress={() => router.push(`/transaction/${item.id}/edit`)}
             />
           );
         }}
