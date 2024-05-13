@@ -44,11 +44,7 @@ function AccountList({ title, accounts }: Props) {
             backgroundColor: theme.colors.elevation.level1,
           }}
           right={() => (
-            <Currency
-              amount={balance}
-              withSymbol
-              style={{ alignSelf: 'center' }}
-            />
+            <Currency amount={balance} style={{ alignSelf: 'center' }} />
           )}
         />
       ))}
