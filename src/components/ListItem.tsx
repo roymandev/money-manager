@@ -12,14 +12,14 @@ function ListItem({
     <List.Item
       style={[
         {
-          paddingLeft: 16,
+          paddingLeft: rest.left ? 16 : 0,
           paddingRight: 16,
         },
         style,
       ]}
       contentStyle={[
         {
-          paddingLeft: 0,
+          paddingLeft: 16,
           paddingRight: 0,
         },
         contentStyle,

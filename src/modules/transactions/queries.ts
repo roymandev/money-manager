@@ -49,3 +49,16 @@ export const useTransactionsAdd = () => {
     },
   });
 };
+
+export const useTransactionsDeleteAll = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => db.delete(transactions),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: transactionsKeys._def,
+      });
+    },
+  });
+};
