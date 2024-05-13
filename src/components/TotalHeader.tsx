@@ -1,13 +1,13 @@
 import { View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
-import Currency from './Currency';
+import Currency, { CurrencyProps } from './Currency';
 
 type Props = {
   items: {
     name: string;
     amount: number;
-    white?: boolean;
+    type?: CurrencyProps;
   }[];
 };
 
@@ -22,7 +22,7 @@ function TotalHeader({ items }: Props) {
         paddingVertical: 8,
       }}
     >
-      {items.map(({ name, amount, white }) => (
+      {items.map(({ name, amount }) => (
         <View
           key={name}
           style={{
@@ -32,7 +32,7 @@ function TotalHeader({ items }: Props) {
           }}
         >
           <Text variant="labelSmall">{name}</Text>
-          <Currency amount={amount} white={white} />
+          <Currency amount={amount} type="neutral" />
         </View>
       ))}
     </View>

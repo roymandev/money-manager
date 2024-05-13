@@ -2,14 +2,8 @@ export const formatCurrency = (
   value: number,
   options?: Intl.NumberFormatOptions & {
     locales?: string;
-    withSymbol?: boolean;
-    withSign?: boolean;
   }
 ) => {
-  const newOptions = { ...options };
-  if (options?.withSymbol) newOptions.style = 'currency';
-  if (!options?.withSign) newOptions.signDisplay = 'never';
-
   return new Intl.NumberFormat(options?.locales || 'id-ID', {
     currency: 'IDR',
     ...options,

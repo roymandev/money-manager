@@ -4,25 +4,15 @@ import { Text, useTheme } from 'react-native-paper';
 
 import { formatCurrency } from '@/utils/formatter';
 
-type Props = {
+export type CurrencyProps = {
   amount: number;
   locales?: string;
-  withSymbol?: boolean;
-  withSign?: boolean;
   type?: 'positive' | 'negative' | 'neutral';
   style?: TextStyle;
   reverse?: boolean;
 };
 
-function Currency({
-  amount,
-  locales,
-  withSymbol,
-  withSign = true,
-  type,
-  reverse,
-  style,
-}: Props) {
+function Currency({ amount, locales, type, reverse, style }: CurrencyProps) {
   const theme = useTheme();
 
   let transType = amount > 0 ? 'positive' : 'negative';
@@ -42,8 +32,8 @@ function Currency({
   }
 
   const display = useMemo(
-    () => formatCurrency(amount, { locales, withSymbol, withSign }),
-    [amount, locales, withSymbol, withSign]
+    () => formatCurrency(amount, { locales }),
+    [amount, locales]
   );
 
   return (
