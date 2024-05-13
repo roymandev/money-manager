@@ -1,75 +1,90 @@
-import { Fragment } from 'react';
-import { FAB, List } from 'react-native-paper';
+import { useState } from 'react';
+import { Appbar, FAB, Text, Title, Tooltip } from 'react-native-paper';
 
-import { format, formatISO } from 'date-fns';
+import {
+  addMonths,
+  endOfMonth,
+  format,
+  startOfMonth,
+  subMonths,
+} from 'date-fns';
 import { useRouter } from 'expo-router';
-import { ScrollView } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Currency from '@/components/Currency';
+import FlasListEmptyContainer from '@/components/FlasListEmptyContainer';
 import ListItem from '@/components/ListItem';
 import ListSubheader from '@/components/ListSubheader';
-import { groupTransByDate } from '@/modules/transactions/utils';
+import PaperStackHeader from '@/components/PaperStackHeader';
+import { useTransactionsByDate } from '@/modules/transactions/queries';
+import { addTransSectionsHeader } from '@/modules/transactions/utils';
+import { FlashList } from '@shopify/flash-list';
 
-const dummyTransactions = groupTransByDate([
-  {
-    id: '1',
-    date: formatISO(new Date()),
-    amount: 100000,
-    type: 'income',
-    category: 'RDS Salary',
-  },
-  {
-    id: '2',
-    date: formatISO(new Date()),
-    amount: -24500,
-    type: 'expense',
-    category: 'Food',
-  },
-  {
-    id: '3',
-    date: formatISO(new Date()),
-    amount: 500000,
-    type: 'income',
-    category: 'Platon Salary',
-  },
-]);
+const today = new Date();
 
 export default function HomeScreen() {
   const router = useRouter();
+  const [month, setMonth] = useState(today);
+
+  const { data } = useTransactionsByDate(
+    startOfMonth(month),
+    endOfMonth(month)
+  );
+  const transWithSections = addTransSectionsHeader(data || []);
+
+  const prevMonth = () => setMonth(subMonths(month, 1));
+  const nextMonth = () => setMonth(addMonths(month, 1));
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 88, flex: 1 }}>
-        <List.Section title="Transactions">
-          {dummyTransactions.map(({ date, items, total }) => (
-            <Fragment key={date}>
+    <>
+      <PaperStackHeader options={{ title: 'Transactions' }}>
+        <Tooltip title="Prev Month">
+          <Appbar.Action icon="chevron-left" onPress={prevMonth} />
+        </Tooltip>
+        <Text>{format(month, 'MMMM yyyy')}</Text>
+        <Tooltip title="Next Month">
+          <Appbar.Action icon="chevron-right" onPress={nextMonth} />
+        </Tooltip>
+      </PaperStackHeader>
+
+      <FlashList
+        data={transWithSections}
+        estimatedItemSize={48}
+        ListEmptyComponent={() => (
+          <FlasListEmptyContainer>
+            <Title>No Transactions</Title>
+          </FlasListEmptyContainer>
+        )}
+        renderItem={({ item }) => {
+          if (Array.isArray(item)) {
+            return (
               <ListSubheader
-                title={format(date, 'dd MMM yyyy')}
-                right={<Currency amount={total} />}
+                title={format(item[0], 'dd MMM yyyy')}
+                right={<Currency amount={item[1]} />}
               />
+            );
+          }
 
-              {items.map(({ id, category, amount }) => (
-                <ListItem
-                  key={id}
-                  title={category}
-                  right={() => <Currency amount={amount} />}
-                />
-              ))}
-            </Fragment>
-          ))}
-        </List.Section>
+          return (
+            <ListItem
+              title={item.category || '(No Category)'}
+              right={() => <Currency amount={item.amount} />}
+            />
+          );
+        }}
+        contentContainerStyle={{
+          paddingBottom: 88,
+        }}
+      />
 
-        <FAB
-          icon="plus"
-          onPress={() => router.push('/transaction/add')}
-          style={{
-            position: 'absolute',
-            bottom: 16,
-            right: 16,
-          }}
-        />
-      </ScrollView>
-    </SafeAreaView>
+      <FAB
+        icon="plus"
+        onPress={() => router.push('/transaction/add')}
+        style={{
+          position: 'absolute',
+          bottom: 16,
+          right: 16,
+        }}
+      />
+    </>
   );
 }

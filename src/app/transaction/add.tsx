@@ -1,6 +1,5 @@
 import { FAB, SegmentedButtons } from 'react-native-paper';
 
-import { formatISO } from 'date-fns';
 import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -10,11 +9,13 @@ import ButtonDatePicker from '@/components/ButtonDatePicker';
 import CurrencyInput from '@/components/CurrencyInput';
 import PaperStackHeader from '@/components/PaperStackHeader';
 import TextInput from '@/components/TextInput';
+import { useTransactionsAdd } from '@/modules/transactions/queries';
 import { schemaTransactionInsert } from '@/schema';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
 function AddTransactionPage() {
   const router = useRouter();
+  const mutation = useTransactionsAdd();
 
   const { control, handleSubmit, setFocus } = useForm<
     Input<typeof schemaTransactionInsert>
@@ -24,13 +25,13 @@ function AddTransactionPage() {
     defaultValues: {
       type: 'expense',
       amount: 0,
-      date: formatISO(new Date()),
-      // category: '',
+      date: new Date().toISOString(),
+      category: '',
     },
   });
 
-  const handleOnSubmit = handleSubmit((data) => {
-    console.log(data);
+  const handleOnSubmit = handleSubmit(async (data) => {
+    await mutation.mutateAsync(data);
     router.back();
   });
 

@@ -1,6 +1,8 @@
 import { ComponentPropsWithoutRef } from 'react';
 import { List } from 'react-native-paper';
 
+// Height 48, with description: 65
+
 function ListItem({
   style,
   contentStyle,
