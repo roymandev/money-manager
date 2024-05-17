@@ -6,8 +6,13 @@ export const transactions = sqliteTable('transactions', {
   type: text('type', { enum: ['income', 'expense', 'transfer'] }).notNull(),
   date: text('date').notNull(),
   amount: integer('amount').notNull(),
-  category: text('category').notNull(),
+  category: integer('category_id').references(() => categories.id),
 });
-
 export const schemaTransactionInsert = createInsertSchema(transactions);
 export const schemaTransactionSelect = createSelectSchema(transactions);
+
+export const categories = sqliteTable('categories', {
+  id: integer('id').primaryKey(),
+  name: text('name').notNull(),
+  type: text('type', { enum: ['income', 'expense'] }).notNull(),
+});
