@@ -1,19 +1,29 @@
 import { FAB, List } from 'react-native-paper';
 
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { parse } from 'valibot';
 
 import ListItem from '@/components/ListItem';
 import PaperStackHeader from '@/components/PaperStackHeader';
 import { useCategoriesByType } from '@/modules/categories/queries';
+import { schemaCategory } from '@/modules/categories/schema';
+import { capitalize } from '@/utils/formatter';
 import { FlashList } from '@shopify/flash-list';
+
+export { ErrorBoundary } from '@/components/utils/ErrorBoundary';
 
 function IncomeCategorySettings() {
   const router = useRouter();
-  const { data } = useCategoriesByType('income');
+  const params = useLocalSearchParams();
+  const type = parse(schemaCategory.entries.type, params.type);
+  const { data } = useCategoriesByType(type);
 
   return (
     <>
-      <PaperStackHeader options={{ title: 'Income Category' }} withBackButton />
+      <PaperStackHeader
+        options={{ title: `${capitalize(type)} Category` }}
+        withBackButton
+      />
 
       <List.Section style={{ marginVertical: 0, flex: 1 }}>
         <FlashList
@@ -28,7 +38,7 @@ function IncomeCategorySettings() {
 
       <FAB
         icon="plus"
-        onPress={() => router.push('./add')}
+        onPress={() => router.push(`./${type}/add`)}
         style={{
           position: 'absolute',
           bottom: 16,

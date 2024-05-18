@@ -9,7 +9,7 @@ import { TCategoryFilters, TCategoryInput } from './schema';
 
 export const categoriesKeys = createQueryKeys('categories', {
   all: null,
-  list: (filters: TCategoryFilters) => ['list', filters],
+  list: (filters: Partial<TCategoryFilters>) => ['list', filters],
   detail: (id: number) => ['detail', id],
 });
 
