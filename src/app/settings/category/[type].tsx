@@ -28,7 +28,12 @@ function IncomeCategorySettings() {
       <List.Section style={{ marginVertical: 0, flex: 1 }}>
         <FlashList
           data={data}
-          renderItem={({ item }) => <ListItem title={item.name} />}
+          renderItem={({ item }) => (
+            <ListItem
+              title={item.name}
+              onPress={() => router.push(`./${type}/${item.id}`)}
+            />
+          )}
           estimatedItemSize={48}
           contentContainerStyle={{
             paddingBottom: 88,
