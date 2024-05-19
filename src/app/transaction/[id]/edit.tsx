@@ -6,7 +6,7 @@ import {
   useTransactionById,
   useTransactionsEdit,
 } from '@/modules/transactions/queries';
-import { TTransactionInput } from '@/modules/transactions/types';
+import { TTransactionInsert } from '@/modules/transactions/types';
 import { promiseHandler } from '@/utils';
 
 function EditTransactionPage() {
@@ -15,7 +15,7 @@ function EditTransactionPage() {
   const { data } = useTransactionById(Number(id));
   const { mutateAsync } = useTransactionsEdit();
 
-  const handleOnSubmit = async (newData: TTransactionInput) => {
+  const handleOnSubmit = async (newData: TTransactionInsert) => {
     if (!data) return;
 
     const [, error] = await promiseHandler(

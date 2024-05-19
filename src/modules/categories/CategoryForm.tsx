@@ -4,19 +4,20 @@ import { Controller, useForm } from 'react-hook-form';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import TextInput from '@/components/TextInput';
+import { schemaCategoryInsert } from '@/schemas';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
-import { TCategoryInput, schemaCategory } from './schema';
+import { TCategoryInsert } from './types';
 
 type Props = {
-  onSubmit: (data: TCategoryInput) => void;
-  type: TCategoryInput['type'];
-  defaultValues?: Partial<TCategoryInput>;
+  onSubmit: (data: TCategoryInsert) => void;
+  type: TCategoryInsert['type'];
+  defaultValues?: Partial<TCategoryInsert>;
 };
 
 function CategoryForm({ onSubmit, defaultValues, type }: Props) {
-  const { control, handleSubmit } = useForm<TCategoryInput>({
-    resolver: valibotResolver(schemaCategory),
+  const { control, handleSubmit } = useForm<TCategoryInsert>({
+    resolver: valibotResolver(schemaCategoryInsert),
     defaultValues: {
       ...defaultValues,
       type,

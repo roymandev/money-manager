@@ -4,7 +4,8 @@ import { parse } from 'valibot';
 import PaperStackHeader from '@/components/PaperStackHeader';
 import CategoryForm from '@/modules/categories/CategoryForm';
 import { useCategoryAdd } from '@/modules/categories/queries';
-import { TCategoryInput, schemaCategory } from '@/modules/categories/schema';
+import { TCategoryInsert } from '@/modules/categories/types';
+import { schemaCategory } from '@/schemas';
 import { promiseHandler } from '@/utils';
 import { capitalize } from '@/utils/formatter';
 
@@ -18,7 +19,7 @@ function AddCategoryPage() {
 
   const { mutateAsync } = useCategoryAdd();
 
-  const handleOnSubmit = async (data: TCategoryInput) => {
+  const handleOnSubmit = async (data: TCategoryInsert) => {
     const [, error] = await promiseHandler(mutateAsync(data));
 
     if (error) return;

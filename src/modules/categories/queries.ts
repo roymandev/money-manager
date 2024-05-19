@@ -1,18 +1,18 @@
 import { eq } from 'drizzle-orm';
 
-import { categories } from '@/schema';
+import { categories } from '@/schemas';
 import { db } from '@/utils/database';
 import { createQueryKeys } from '@lukemorales/query-key-factory';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { TCategory, TCategoryFilters, TCategoryInput } from './schema';
+import { TCategory, TCategoryFilters, TCategoryInsert } from './types';
 
 export const categoriesKeys = createQueryKeys('categories', {
   list: (filters: Partial<TCategoryFilters>) => ['list', filters],
   detail: (id: number) => ['detail', id],
 });
 
-export const useCategoriesByType = (type: TCategoryInput['type']) =>
+export const useCategoriesByType = (type: TCategoryInsert['type']) =>
   useQuery({
     ...categoriesKeys.list({ type }),
     queryFn: () =>
@@ -25,7 +25,7 @@ export const useCategoryAdd = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: TCategoryInput) => db.insert(categories).values(data),
+    mutationFn: (data: TCategoryInsert) => db.insert(categories).values(data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: categoriesKeys.list({ type: variables.type }).queryKey,
@@ -45,7 +45,7 @@ export const useCategoryEdit = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: TCategoryInput) =>
+    mutationFn: (data: TCategory) =>
       db.update(categories).set(data).where(eq(categories.id, data.id)),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({

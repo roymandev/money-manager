@@ -6,7 +6,7 @@ import { parse } from 'valibot';
 import ListItem from '@/components/ListItem';
 import PaperStackHeader from '@/components/PaperStackHeader';
 import { useCategoriesByType } from '@/modules/categories/queries';
-import { schemaCategory } from '@/modules/categories/schema';
+import { schemaCategory } from '@/schemas';
 import { capitalize } from '@/utils/formatter';
 import { FlashList } from '@shopify/flash-list';
 

@@ -19,13 +19,14 @@ import {
   useCategoryDetail,
   useCategoryEdit,
 } from '@/modules/categories/queries';
-import { TCategoryInput, schemaCategory } from '@/modules/categories/schema';
+import { TCategoryInsert } from '@/modules/categories/types';
+import { schemaCategory } from '@/schemas';
 import { promiseHandler } from '@/utils';
 import { capitalize } from '@/utils/formatter';
 
 export { ErrorBoundary } from '@/components/utils/ErrorBoundary';
 
-function AddCategoryPage() {
+function DetailCategoryPage() {
   const theme = useTheme();
   const router = useRouter();
   const params = useLocalSearchParams();
@@ -46,8 +47,12 @@ function AddCategoryPage() {
   const { mutateAsync } = useCategoryEdit();
   const { mutateAsync: mutateAsyncDelete } = useCategoryDelete();
 
-  const handleOnSubmit = async (newData: TCategoryInput) => {
-    const [, error] = await promiseHandler(mutateAsync(newData));
+  const handleOnSubmit = async (newData: TCategoryInsert) => {
+    if (!data) return;
+
+    const [, error] = await promiseHandler(
+      mutateAsync({ ...data, ...newData })
+    );
 
     if (error) return;
 
@@ -119,4 +124,4 @@ function AddCategoryPage() {
   );
 }
 
-export default AddCategoryPage;
+export default DetailCategoryPage;
