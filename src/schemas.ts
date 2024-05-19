@@ -1,6 +1,6 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-valibot';
-import { minLength, number, picklist, string } from 'valibot';
+import { minLength, number, picklist, string, transform } from 'valibot';
 
 export const transactions = sqliteTable('transactions', {
   id: integer('id').primaryKey(),
@@ -25,6 +25,9 @@ export const categories = sqliteTable('categories', {
 
 export const schemaCategory = createSelectSchema(categories);
 export const schemaCategoryInsert = createInsertSchema(categories, {
-  name: string('Name is required', [minLength(1, 'Name is required')]),
+  name: transform(
+    string('Name is required', [minLength(1, 'Name is required')]),
+    (input) => input.trim()
+  ),
   type: picklist(['income', 'expense'], 'Type is required'),
 });
