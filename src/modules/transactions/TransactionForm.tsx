@@ -6,25 +6,25 @@ import { ScrollView } from 'react-native-gesture-handler';
 import ButtonDatePicker from '@/components/ButtonDatePicker';
 import CurrencyInput from '@/components/CurrencyInput';
 import TextInput from '@/components/TextInput';
-import { schemaTransactionInsert } from '@/schema';
+import { schemaTransactionInsert } from '@/schemas';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
-import { TTransactionInput } from './types';
+import { TTransactionInsert } from './types';
 
 type Props = {
-  onSubmit: (data: TTransactionInput) => void;
-  defaultValues?: Partial<TTransactionInput>;
+  onSubmit: (data: TTransactionInsert) => void;
+  defaultValues?: Partial<TTransactionInsert>;
 };
 
 function TransactionForm({ onSubmit, defaultValues }: Props) {
-  const { control, handleSubmit, setFocus } = useForm<TTransactionInput>({
+  const { control, handleSubmit, setFocus } = useForm<TTransactionInsert>({
     resolver: valibotResolver(schemaTransactionInsert),
     shouldFocusError: false,
     defaultValues: {
       type: 'expense',
       amount: 0,
       date: new Date().toISOString(),
-      category: '',
+      categoryId: 0,
       ...defaultValues,
     },
   });
@@ -79,12 +79,13 @@ function TransactionForm({ onSubmit, defaultValues }: Props) {
 
         <Controller
           control={control}
-          name="category"
-          render={({ field: { onChange, ...rest }, fieldState }) => (
+          name="categoryId"
+          render={({ field: { value, onChange, ...rest }, fieldState }) => (
             <TextInput
               label="Category"
               mode="outlined"
-              onChangeText={onChange}
+              value={value?.toString()}
+              onChangeText={(newVal) => onChange(Number(newVal))}
               error={fieldState.error?.message}
               {...rest}
             />

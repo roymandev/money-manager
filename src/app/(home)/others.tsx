@@ -36,8 +36,11 @@ export default function OthersScreen() {
 
         <ListItem
           title="Income Category"
-          left={() => <List.Icon icon="swap-vertical-bold" />}
-          onPress={() => router.push('/settings/income-category')}
+          onPress={() => router.push('/settings/category/income')}
+        />
+        <ListItem
+          title="Expense Category"
+          onPress={() => router.push('/settings/category/expense')}
         />
       </List.Section>
     </View>

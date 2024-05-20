@@ -34,7 +34,6 @@ export default function TransactionsScreen() {
           {
             name: 'Total',
             amount: 1957225,
-            white: true,
           },
         ]}
       />
@@ -76,7 +75,6 @@ export default function TransactionsScreen() {
               right={() => (
                 <Currency
                   amount={item.balance}
-                  withSymbol
                   style={{ alignSelf: 'center' }}
                 />
               )}

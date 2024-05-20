@@ -1,13 +1,12 @@
 import { endOfDay, startOfDay } from 'date-fns';
 import { between, desc, eq } from 'drizzle-orm';
-import { Input } from 'valibot';
 
-import { schemaTransactionInsert, transactions } from '@/schema';
+import { transactions } from '@/schemas';
 import { db } from '@/utils/database';
 import { createQueryKeys } from '@lukemorales/query-key-factory';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { TTransaction, TTransactionFilters } from './types';
+import { TTransaction, TTransactionFilters, TTransactionInsert } from './types';
 
 export const transactionsKeys = createQueryKeys('transactions', {
   all: null,
@@ -19,7 +18,9 @@ export const useTransactions = () =>
   useQuery({
     queryKey: transactionsKeys.all.queryKey,
     queryFn: () =>
-      db.select().from(transactions).orderBy(desc(transactions.date)),
+      db.query.transactions.findMany({
+        orderBy: desc(transactions.date),
+      }),
   });
 
 export const useTransactionsByDate = (start: Date, end: Date) => {
@@ -29,11 +30,10 @@ export const useTransactionsByDate = (start: Date, end: Date) => {
   return useQuery({
     ...transactionsKeys.list({ dateStart, dateEnd }),
     queryFn: (): Promise<TTransaction[]> =>
-      db
-        .select()
-        .from(transactions)
-        .where(between(transactions.date, dateStart, dateEnd))
-        .orderBy(desc(transactions.date)),
+      db.query.transactions.findMany({
+        where: between(transactions.date, dateStart, dateEnd),
+        orderBy: desc(transactions.date),
+      }),
   });
 };
 
@@ -50,7 +50,7 @@ export const useTransactionsAdd = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: Input<typeof schemaTransactionInsert>) =>
+    mutationFn: (data: TTransactionInsert) =>
       db.insert(transactions).values(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
