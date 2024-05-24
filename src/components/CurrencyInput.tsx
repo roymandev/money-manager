@@ -32,7 +32,7 @@ const CurrencyInput = forwardRef<RnTextInput, Props>(
 
     const formattedValue = useMemo(() => {
       // if (isFocused) return String(_value);
-      return formatCurrency(_value, { withSign: true });
+      return formatCurrency(_value);
     }, [_value]);
 
     const handleOnChangeText = (newValue: string) => {
