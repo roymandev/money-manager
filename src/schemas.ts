@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { z } from 'zod';
 
@@ -17,16 +18,24 @@ export const categories = sqliteTable('categories', {
   type: text('type', { enum: ['income', 'expense'] }).notNull(),
 });
 
+// Relations
+export const transactionsRelations = relations(transactions, ({ one }) => ({
+  category: one(categories, {
+    fields: [transactions.categoryId],
+    references: [categories.id],
+  }),
+}));
+
 // Schemas
-export const schemaTransaction = z.object({
-  id: z.number(),
-});
-export const schemaTransactionInsert = schemaTransaction.extend({
+export const schemaTransactionInsert = z.object({
   id: z.optional(z.number()),
   type: z.enum(['income', 'expense', 'transfer']),
   date: z.string().datetime('Date not valid'),
   amount: z.number(),
   categoryId: z.number(),
+});
+export const schemaTransaction = schemaTransactionInsert.extend({
+  id: z.number(),
 });
 
 export const schemaCategoryInsert = z.object({

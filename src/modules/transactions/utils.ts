@@ -1,6 +1,8 @@
 import { isSameDay, startOfDay } from 'date-fns';
 
-import { TTransaction, TTransactionGroup, TTransactionSections } from './types';
+import { FlashListSections } from '@/types';
+
+import { TTransaction, TTransactionGroup } from './types';
 
 export const groupTransByDate = (items: TTransaction[]) =>
   items.reduce((acc: TTransactionGroup[], item) => {
@@ -21,8 +23,8 @@ export const groupTransByDate = (items: TTransaction[]) =>
     return acc;
   }, []);
 
-export const addTransSectionsHeader = (items: TTransaction[]) => {
-  const sections: TTransactionSections = [];
+export const addTransSectionsHeader = <T extends TTransaction>(items: T[]) => {
+  const sections: FlashListSections<T> = [];
   let headerIndex = -1;
   let headerAmount = 0;
   let headerDate = '';

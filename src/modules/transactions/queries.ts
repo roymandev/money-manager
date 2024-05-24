@@ -17,10 +17,16 @@ export const transactionsKeys = createQueryKeys('transactions', {
 export const useTransactions = () =>
   useQuery({
     queryKey: transactionsKeys.all.queryKey,
-    queryFn: () =>
-      db.query.transactions.findMany({
+    queryFn: () => {
+      const data = db.query.transactions.findMany({
         orderBy: desc(transactions.date),
-      }),
+        with: {
+          category: true,
+        },
+      });
+
+      return data;
+    },
   });
 
 export const useTransactionsByDate = (start: Date, end: Date) => {
@@ -29,11 +35,17 @@ export const useTransactionsByDate = (start: Date, end: Date) => {
 
   return useQuery({
     ...transactionsKeys.list({ dateStart, dateEnd }),
-    queryFn: (): Promise<TTransaction[]> =>
-      db.query.transactions.findMany({
+    queryFn: async () => {
+      const data = await db.query.transactions.findMany({
         where: between(transactions.date, dateStart, dateEnd),
         orderBy: desc(transactions.date),
-      }),
+        with: {
+          category: true,
+        },
+      });
+
+      return data;
+    },
   });
 };
 
