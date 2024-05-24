@@ -6,7 +6,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import ButtonDatePicker from '@/components/ButtonDatePicker';
 import CurrencyInput from '@/components/CurrencyInput';
 import { schemaTransactionInsert } from '@/schemas';
-import { valibotResolver } from '@hookform/resolvers/valibot';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import CategorySelector from '../categories/CategorySelector';
 import { TTransactionInsert } from './types';
@@ -19,7 +19,7 @@ type Props = {
 function TransactionForm({ onSubmit, defaultValues }: Props) {
   const { control, handleSubmit, setFocus, watch } =
     useForm<TTransactionInsert>({
-      resolver: valibotResolver(schemaTransactionInsert),
+      resolver: zodResolver(schemaTransactionInsert),
       shouldFocusError: false,
       defaultValues: {
         type: 'expense',

@@ -10,7 +10,6 @@ import {
 } from 'react-native-paper';
 
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { parse, pick } from 'valibot';
 
 import PaperStackHeader from '@/components/PaperStackHeader';
 import CategoryForm from '@/modules/categories/CategoryForm';
@@ -30,10 +29,9 @@ function DetailCategoryPage() {
   const theme = useTheme();
   const router = useRouter();
   const params = useLocalSearchParams();
-  const { type, id } = parse(pick(schemaCategory, ['id', 'type']), {
-    ...params,
-    id: Number(params.id),
-  });
+  const { type, id } = schemaCategory
+    .pick({ type: true, id: true })
+    .parse(params);
 
   const [visible, setVisible] = useState(false);
   const showDialog = () => {

@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import TextInput from '@/components/TextInput';
 import { schemaCategoryInsert } from '@/schemas';
-import { valibotResolver } from '@hookform/resolvers/valibot';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { TCategoryInsert } from './types';
 
@@ -17,7 +17,7 @@ type Props = {
 
 function CategoryForm({ onSubmit, defaultValues, type }: Props) {
   const { control, handleSubmit } = useForm<TCategoryInsert>({
-    resolver: valibotResolver(schemaCategoryInsert),
+    resolver: zodResolver(schemaCategoryInsert),
     defaultValues: {
       ...defaultValues,
       type,

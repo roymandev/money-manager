@@ -1,10 +1,10 @@
-import { Input, Output } from 'valibot';
+import { z } from 'zod';
 
 import { schemaCategory, schemaCategoryInsert } from '@/schemas';
 
-export type TCategory = Output<typeof schemaCategory>;
+export type TCategory = z.output<typeof schemaCategory>;
 
-export type TCategoryInsert = Input<typeof schemaCategoryInsert>;
+export type TCategoryInsert = z.input<typeof schemaCategoryInsert>;
 
 export type TCategoryFilters = {
   type: TCategoryInsert['type'];

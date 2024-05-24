@@ -1,5 +1,4 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { parse } from 'valibot';
 
 import PaperStackHeader from '@/components/PaperStackHeader';
 import CategoryForm from '@/modules/categories/CategoryForm';
@@ -15,7 +14,7 @@ function AddCategoryPage() {
   const router = useRouter();
 
   const params = useLocalSearchParams();
-  const type = parse(schemaCategory.entries.type, params.type);
+  const type = schemaCategory.shape.type.parse(params.type);
 
   const { mutateAsync } = useCategoryAdd();
 

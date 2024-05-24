@@ -35,21 +35,16 @@ export const useCategoryAdd = () => {
   });
 };
 
-export const getCategoryDetail = async (
-  id: number,
-  type?: TCategory['type']
-) => {
-  let filter: SQL<unknown> | undefined = eq(categories.id, id);
-  if (type) filter = and(filter, eq(categories.type, type));
-  const data = await db.query.categories.findFirst({ where: filter });
-
-  return data || null;
-};
-
 export const useCategoryDetail = (id?: number, type?: TCategory['type']) => {
   return useQuery({
     ...categoriesKeys.detail(id, type),
-    queryFn: dependOn(id, (dep) => getCategoryDetail(dep, type)),
+    queryFn: dependOn(id, async (dep) => {
+      let filter: SQL<unknown> | undefined = eq(categories.id, dep);
+      if (type) filter = and(filter, eq(categories.type, type));
+      const data = await db.query.categories.findFirst({ where: filter });
+
+      return data || null;
+    }),
     enabled: !!id,
   });
 };

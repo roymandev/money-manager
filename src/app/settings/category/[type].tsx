@@ -1,7 +1,6 @@
 import { FAB, List } from 'react-native-paper';
 
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { parse } from 'valibot';
 
 import ListItem from '@/components/ListItem';
 import PaperStackHeader from '@/components/PaperStackHeader';
@@ -15,7 +14,7 @@ export { ErrorBoundary } from '@/components/utils/ErrorBoundary';
 function IncomeCategorySettings() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const type = parse(schemaCategory.entries.type, params.type);
+  const type = schemaCategory.shape.type.parse(params.type);
   const { data } = useCategoriesByType(type);
 
   return (

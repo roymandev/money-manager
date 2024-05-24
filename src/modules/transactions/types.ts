@@ -1,10 +1,10 @@
-import { Input, Output } from 'valibot';
+import { z } from 'zod';
 
 import { schemaTransaction, schemaTransactionInsert } from '@/schemas';
 
-export type TTransaction = Output<typeof schemaTransaction>;
+export type TTransaction = z.output<typeof schemaTransaction>;
 
-export type TTransactionInsert = Input<typeof schemaTransactionInsert>;
+export type TTransactionInsert = z.input<typeof schemaTransactionInsert>;
 
 export type TTransactionGroup = {
   date: string;
