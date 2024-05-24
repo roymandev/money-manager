@@ -5,10 +5,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import ButtonDatePicker from '@/components/ButtonDatePicker';
 import CurrencyInput from '@/components/CurrencyInput';
-import TextInput from '@/components/TextInput';
 import { schemaTransactionInsert } from '@/schemas';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 
+import CategorySelector from '../categories/CategorySelector';
 import { TTransactionInsert } from './types';
 
 type Props = {
@@ -17,17 +17,19 @@ type Props = {
 };
 
 function TransactionForm({ onSubmit, defaultValues }: Props) {
-  const { control, handleSubmit, setFocus } = useForm<TTransactionInsert>({
-    resolver: valibotResolver(schemaTransactionInsert),
-    shouldFocusError: false,
-    defaultValues: {
-      type: 'expense',
-      amount: 0,
-      date: new Date().toISOString(),
-      categoryId: 0,
-      ...defaultValues,
-    },
-  });
+  const { control, handleSubmit, setFocus, watch } =
+    useForm<TTransactionInsert>({
+      resolver: valibotResolver(schemaTransactionInsert),
+      shouldFocusError: false,
+      defaultValues: {
+        type: 'expense',
+        amount: 0,
+        date: new Date().toISOString(),
+        ...defaultValues,
+      },
+    });
+
+  const type = watch('type');
 
   const handleOnSubmit = handleSubmit(onSubmit);
 
@@ -69,7 +71,7 @@ function TransactionForm({ onSubmit, defaultValues }: Props) {
               label="Date"
               onChange={(value) => {
                 onChange(value);
-                setTimeout(() => setFocus('amount'), 200);
+                setTimeout(() => setFocus('categoryId'), 300);
               }}
               error={fieldState.error?.message}
               {...rest}
@@ -77,20 +79,24 @@ function TransactionForm({ onSubmit, defaultValues }: Props) {
           )}
         />
 
-        <Controller
-          control={control}
-          name="categoryId"
-          render={({ field: { value, onChange, ...rest }, fieldState }) => (
-            <TextInput
-              label="Category"
-              mode="outlined"
-              value={value?.toString()}
-              onChangeText={(newVal) => onChange(Number(newVal))}
-              error={fieldState.error?.message}
-              {...rest}
-            />
-          )}
-        />
+        {type !== 'transfer' && (
+          <Controller
+            control={control}
+            name="categoryId"
+            render={({ field: { onChange, ...rest }, fieldState }) => (
+              <CategorySelector
+                label="Category"
+                type={type}
+                error={fieldState.error?.message}
+                onChange={(value) => {
+                  onChange(value);
+                  setTimeout(() => setFocus('amount'), 300);
+                }}
+                {...rest}
+              />
+            )}
+          />
+        )}
 
         <Controller
           control={control}

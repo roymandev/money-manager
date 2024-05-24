@@ -1,6 +1,7 @@
 import { StackHeaderProps } from '@react-navigation/stack';
 
 import * as SplashScreen from 'expo-splash-screen';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { enGB, registerTranslation } from 'react-native-paper-dates';
 
 import PaperStackHeader from '@/components/PaperStackHeader';
@@ -30,25 +31,27 @@ function Header(props: StackHeaderProps) {
 
 export default function RootLayout() {
   return (
-    <DatabaseProvider>
-      <ThemesProvider>
-        <PaperStack
-          screenOptions={{
-            headerShown: false,
-            header: Header,
-            transitionSpec: {
-              open: {
-                animation: 'timing',
-                config: { duration: 100, delay: 0 },
+    <GestureHandlerRootView>
+      <DatabaseProvider>
+        <ThemesProvider>
+          <PaperStack
+            screenOptions={{
+              headerShown: false,
+              header: Header,
+              transitionSpec: {
+                open: {
+                  animation: 'timing',
+                  config: { duration: 100, delay: 0 },
+                },
+                close: {
+                  animation: 'timing',
+                  config: { duration: 100, delay: 0 },
+                },
               },
-              close: {
-                animation: 'timing',
-                config: { duration: 100, delay: 0 },
-              },
-            },
-          }}
-        />
-      </ThemesProvider>
-    </DatabaseProvider>
+            }}
+          />
+        </ThemesProvider>
+      </DatabaseProvider>
+    </GestureHandlerRootView>
   );
 }

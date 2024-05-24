@@ -1,6 +1,7 @@
-import { eq } from 'drizzle-orm';
+import { SQL, and, eq } from 'drizzle-orm';
 
 import { categories } from '@/schemas';
+import { dependOn } from '@/utils';
 import { db } from '@/utils/database';
 import { createQueryKeys } from '@lukemorales/query-key-factory';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -9,7 +10,7 @@ import { TCategory, TCategoryFilters, TCategoryInsert } from './types';
 
 export const categoriesKeys = createQueryKeys('categories', {
   list: (filters: Partial<TCategoryFilters>) => ['list', filters],
-  detail: (id: number) => ['detail', id],
+  detail: (id?: number, type?: TCategory['type']) => ['detail', id, type],
 });
 
 export const useCategoriesByType = (type: TCategoryInsert['type']) =>
@@ -34,12 +35,24 @@ export const useCategoryAdd = () => {
   });
 };
 
-export const useCategoryDetail = (id: number) =>
-  useQuery({
-    ...categoriesKeys.detail(id),
-    queryFn: () =>
-      db.query.categories.findFirst({ where: eq(categories.id, id) }),
+export const getCategoryDetail = async (
+  id: number,
+  type?: TCategory['type']
+) => {
+  let filter: SQL<unknown> | undefined = eq(categories.id, id);
+  if (type) filter = and(filter, eq(categories.type, type));
+  const data = await db.query.categories.findFirst({ where: filter });
+
+  return data || null;
+};
+
+export const useCategoryDetail = (id?: number, type?: TCategory['type']) => {
+  return useQuery({
+    ...categoriesKeys.detail(id, type),
+    queryFn: dependOn(id, (dep) => getCategoryDetail(dep, type)),
+    enabled: !!id,
   });
+};
 
 export const useCategoryEdit = () => {
   const queryClient = useQueryClient();
