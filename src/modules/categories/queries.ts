@@ -1,4 +1,4 @@
-import { SQL, and, eq } from 'drizzle-orm';
+import { SQL, eq } from 'drizzle-orm';
 
 import { categories } from '@/schemas';
 import { dependOn } from '@/utils';
@@ -10,7 +10,7 @@ import { TCategory, TCategoryFilters, TCategoryInsert } from './types';
 
 export const categoriesKeys = createQueryKeys('categories', {
   list: (filters: Partial<TCategoryFilters>) => ['list', filters],
-  detail: (id?: number, type?: TCategory['type']) => ['detail', id, type],
+  detail: (id?: number) => ['detail', id],
 });
 
 export const useCategoriesByType = (type: TCategoryInsert['type']) =>
@@ -35,12 +35,12 @@ export const useCategoryAdd = () => {
   });
 };
 
-export const useCategoryDetail = (id?: number, type?: TCategory['type']) => {
+export const useCategoryDetail = (id?: number) => {
   return useQuery({
-    ...categoriesKeys.detail(id, type),
+    ...categoriesKeys.detail(id),
     queryFn: dependOn(id, async (dep) => {
-      let filter: SQL<unknown> | undefined = eq(categories.id, dep);
-      if (type) filter = and(filter, eq(categories.type, type));
+      const filter: SQL<unknown> | undefined = eq(categories.id, dep);
+      //   if (type) filter = and(filter, eq(categories.type, type));
       const data = await db.query.categories.findFirst({ where: filter });
 
       return data || null;

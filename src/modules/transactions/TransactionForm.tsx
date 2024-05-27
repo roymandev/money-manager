@@ -88,10 +88,11 @@ function TransactionForm({ onSubmit, defaultValues }: Props) {
                 label="Category"
                 type={type}
                 error={fieldState.error?.message}
-                onChange={(value) => {
+                onSelect={(value) => {
                   onChange(value);
                   setTimeout(() => setFocus('amount'), 300);
                 }}
+                onChange={onChange}
                 {...rest}
               />
             )}

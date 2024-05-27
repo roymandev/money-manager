@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { z } from 'zod';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import { number } from 'zod';
 
 export const transactions = sqliteTable('transactions', {
   id: integer('id').primaryKey(),
@@ -27,22 +28,15 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
 }));
 
 // Schemas
-export const schemaTransactionInsert = z.object({
-  id: z.optional(z.number()),
-  type: z.enum(['income', 'expense', 'transfer']),
-  date: z.string().datetime('Date not valid'),
-  amount: z.number(),
-  categoryId: z.number(),
+export const schemaTransactionInsert = createInsertSchema(transactions, {
+  date: (data) => data.date.datetime('Date is not valid'),
+  categoryId: number({
+    message: 'Required',
+  }),
 });
-export const schemaTransaction = schemaTransactionInsert.extend({
-  id: z.number(),
-});
+export const schemaTransaction = createSelectSchema(transactions);
 
-export const schemaCategoryInsert = z.object({
-  id: z.optional(z.number()),
-  name: z.string().trim(),
-  type: z.enum(['income', 'expense']),
+export const schemaCategoryInsert = createInsertSchema(categories, {
+  name: (data) => data.name.trim(),
 });
-export const schemaCategory = schemaCategoryInsert.extend({
-  id: z.number(),
-});
+export const schemaCategory = createSelectSchema(categories);

@@ -1,4 +1,4 @@
-import { forwardRef, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Keyboard, TextInput as RnTextInput } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
@@ -14,7 +14,8 @@ import { TCategory } from './types';
 type Props = {
   label?: string;
   value?: number;
-  onChange?: (value?: number) => void;
+  onSelect?: (value?: number) => void;
+  onChange: (value: number | null) => void;
   error?: string;
   type: TCategory['type'];
 };
@@ -55,13 +56,15 @@ function CategoryList({
 }
 
 const CategorySelector = forwardRef<RnTextInput, Props>(
-  ({ label, value, onChange, error, type }, ref) => {
+  ({ label, value, onSelect, onChange, error, type }, ref) => {
     const bottomSheetRef = useRef<BottomSheet>(null);
     const [mounted, setMounted] = useState(false);
 
+    const prevData = useRef<TCategory | null>(null);
+
     const [_value, handleChange] = useUncontrolled<number | undefined>({
       value,
-      onChange,
+      onChange: onSelect,
     });
 
     const openSheet = () => {
@@ -73,7 +76,16 @@ const CategorySelector = forwardRef<RnTextInput, Props>(
       }, time);
     };
 
-    const { data } = useCategoryDetail(_value, type);
+    const { data } = useCategoryDetail(_value);
+
+    useEffect(() => {
+      if (prevData.current?.type !== type && data) {
+        prevData.current = data;
+        onChange(null);
+      } else if (prevData.current?.type === type) {
+        onChange(prevData.current.id);
+      }
+    }, [type]);
 
     const onSelectHandler = (itemId: number) => {
       handleChange(itemId);
